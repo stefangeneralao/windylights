@@ -4,7 +4,7 @@ import { devices } from "./devices";
 import { fetchSchedule, saveSchedule, type ScheduleRule } from "./api";
 
 const DAY_LABELS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-const DAY_DIGITS = ["0", "1", "2", "3", "4", "5", "6"];
+const DAY_DIGITS = ["1", "2", "3", "4", "5", "6", "0"];
 
 function formatDays(days: string): string {
   if (days === "1234567") return "Every day";
