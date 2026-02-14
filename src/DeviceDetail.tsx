@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { devices } from "./devices";
 import { fetchSchedule, saveSchedule, type ScheduleRule } from "./api";
@@ -131,13 +131,26 @@ export function DeviceDetail() {
   const device = devices.find((d) => d.id === id);
 
   const [rules, setRules] = useState<ScheduleRule[] | null>(null);
-  const [saving, setSaving] = useState(false);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "ok" | "error">("idle");
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
     if (!id) return;
     fetchSchedule(id).then(setRules);
   }, [id]);
+
+  useEffect(() => {
+    if (rules === null) return;
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return;
+    }
+    if (!id) return;
+    setSaveStatus("saving");
+    saveSchedule(id, rules).then((ok) => {
+      setSaveStatus(ok ? "ok" : "error");
+    });
+  }, [rules]);
 
   if (!device) {
     return (
@@ -150,23 +163,12 @@ export function DeviceDetail() {
     );
   }
 
-  async function handleSave() {
-    if (!id || rules === null) return;
-    setSaving(true);
-    setSaveStatus("idle");
-    const ok = await saveSchedule(id, rules);
-    setSaveStatus(ok ? "ok" : "error");
-    setSaving(false);
-  }
-
   function handleAdd(rule: ScheduleRule) {
     setRules((prev) => (prev ? [...prev, rule] : [rule]));
-    setSaveStatus("idle");
   }
 
   function handleDelete(index: number) {
     setRules((prev) => (prev ? prev.filter((_, i) => i !== index) : []));
-    setSaveStatus("idle");
   }
 
   return (
@@ -185,9 +187,20 @@ export function DeviceDetail() {
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
-          Schedule
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+            Schedule
+          </h2>
+          {saveStatus === "saving" && (
+            <span className="text-xs text-zinc-400">Saving…</span>
+          )}
+          {saveStatus === "ok" && (
+            <span className="text-xs text-green-600 dark:text-green-400">Saved</span>
+          )}
+          {saveStatus === "error" && (
+            <span className="text-xs text-red-500">Failed to save</span>
+          )}
+        </div>
 
         {rules === null ? (
           <p className="text-zinc-400 text-sm">Loading…</p>
@@ -201,28 +214,7 @@ export function DeviceDetail() {
           </div>
         )}
 
-        {rules !== null && (
-          <>
-            <AddRuleForm onAdd={handleAdd} />
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="w-full rounded-xl bg-yellow-400 text-yellow-900 font-semibold py-3 min-h-[44px] disabled:opacity-50 transition-colors hover:bg-yellow-300"
-            >
-              {saving ? "Saving…" : "Save schedule"}
-            </button>
-            {saveStatus === "ok" && (
-              <p className="text-green-600 dark:text-green-400 text-sm text-center">
-                Schedule saved.
-              </p>
-            )}
-            {saveStatus === "error" && (
-              <p className="text-red-500 text-sm text-center">
-                Failed to save. Are you on the home network?
-              </p>
-            )}
-          </>
-        )}
+        {rules !== null && <AddRuleForm onAdd={handleAdd} />}
       </section>
     </main>
   );
