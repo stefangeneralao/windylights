@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Settings2 } from "lucide-react";
 import { type Device } from "./devices";
 import { fetchRelayState, toggleRelay } from "./api";
 import { ToggleSwitch } from "./ToggleSwitch";
@@ -63,7 +64,7 @@ export function LampButton({ device }: Props) {
         ].join(" ")}
         aria-label={`${device.name} settings`}
       >
-        ⚙
+        <Settings2 size={18} />
       </button>
     </div>
   );
