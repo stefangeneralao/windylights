@@ -26,7 +26,7 @@ export function LampButton({ device }: { device: (typeof devices)[number] }) {
       onClick={handleToggle}
       disabled={loading}
       className={[
-        "min-h-[44px] w-full rounded-2xl px-6 py-4 text-lg font-semibold transition-colors",
+        "w-full rounded-2xl px-6 py-4 text-lg font-semibold transition-colors",
         on
           ? "bg-yellow-300 text-yellow-900"
           : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300",
@@ -34,7 +34,8 @@ export function LampButton({ device }: { device: (typeof devices)[number] }) {
         unknown ? "opacity-40" : "",
       ].join(" ")}
     >
-      {device.name} — {unknown ? "…" : on ? "On" : "Off"}
+      {device.name}
+      {unknown && "…"}
     </button>
   );
 }
