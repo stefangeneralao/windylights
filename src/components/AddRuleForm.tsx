@@ -47,13 +47,13 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
           ))}
         </div>
       </div>
-      <div className="flex gap-2 flex-wrap">
+      <div className="grid grid-cols-7 gap-1.5">
         {DAY_DIGITS.map((d) => (
           <button
             key={d}
             onClick={() => toggleDay(d)}
             className={[
-              "w-10 h-10 rounded-full text-sm font-semibold transition-colors",
+              "w-full min-h-[44px] rounded-xl text-sm font-semibold transition-colors",
               selectedDays.includes(d)
                 ? "bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900"
                 : "bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600",
