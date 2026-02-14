@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { devices } from "./devices";
 import { fetchSchedule, saveSchedule, type ScheduleRule } from "./api";
 import { RuleRow } from "./RuleRow";
@@ -31,7 +32,7 @@ export function DeviceDetail() {
         <p className="text-zinc-500">Device not found.</p>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 text-blue-500 underline"
+          className="mt-4 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors underline"
         >
           Back
         </button>
@@ -52,19 +53,19 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col p-6 gap-6 max-w-lg mx-auto">
-      <div className="flex items-center gap-3">
+    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col p-6 gap-6 max-w-sm mx-auto">
+      <header className="pt-6 pb-2 flex items-center gap-3">
         <button
           onClick={() => navigate("/")}
-          className="text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-44 min-h-44 flex items-center justify-center text-xl"
+          className="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-11 min-h-11 flex items-center justify-center"
           aria-label="Back"
         >
-          ←
+          <ArrowLeft size={22} />
         </button>
-        <h1 className="text-2xl font-bold text-zinc-800 dark:text-zinc-100">
+        <h1 className="text-4xl font-black text-zinc-800 dark:text-zinc-100">
           {device.name}
         </h1>
-      </div>
+      </header>
 
       <section className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
@@ -75,26 +76,24 @@ export function DeviceDetail() {
             <span className="text-xs text-zinc-400">Saving…</span>
           )}
           {saveStatus === "ok" && (
-            <span className="text-xs text-green-600 dark:text-green-400">
-              Saved
-            </span>
+            <span className="text-xs text-green-500 dark:text-green-400">Saved</span>
           )}
           {saveStatus === "error" && (
             <span className="text-xs text-red-500">Failed to save</span>
           )}
         </div>
 
-        {rules === null ? (
-          <p className="text-zinc-400 text-sm">Loading…</p>
-        ) : rules.length === 0 ? (
-          <p className="text-zinc-400 text-sm">No schedule rules set.</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {rules.map((rule, i) => (
+        <div className="flex flex-col gap-2 bg-white dark:bg-zinc-800 rounded-2xl p-3 shadow-sm border border-zinc-200 dark:border-zinc-700">
+          {rules === null ? (
+            <p className="text-zinc-400 text-sm px-1 py-1">Loading…</p>
+          ) : rules.length === 0 ? (
+            <p className="text-zinc-400 text-sm px-1 py-1">No schedule rules set.</p>
+          ) : (
+            rules.map((rule, i) => (
               <RuleRow key={i} rule={rule} onDelete={() => handleDelete(i)} />
-            ))}
-          </div>
-        )}
+            ))
+          )}
+        </div>
 
         {rules !== null && <AddRuleForm onAdd={handleAdd} />}
       </section>
