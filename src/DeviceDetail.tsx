@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { devices } from "./devices";
 import { fetchSchedule, saveSchedule, type ScheduleRule } from "./api";
@@ -11,28 +11,19 @@ export function DeviceDetail() {
   const device = devices.find((d) => d.id === id);
 
   const [rules, setRules] = useState<ScheduleRule[] | null>(null);
-  const [saveStatus, setSaveStatus] = useState<
-    "idle" | "saving" | "ok" | "error"
-  >("idle");
-  const isFirstLoad = useRef(true);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
 
   useEffect(() => {
     if (!id) return;
     fetchSchedule(id).then(setRules);
   }, [id]);
 
-  useEffect(() => {
-    if (rules === null) return;
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-      return;
-    }
+  async function save(updated: ScheduleRule[]) {
     if (!id) return;
     setSaveStatus("saving");
-    saveSchedule(id, rules).then((ok) => {
-      setSaveStatus(ok ? "ok" : "error");
-    });
-  }, [rules]);
+    const ok = await saveSchedule(id, updated);
+    setSaveStatus(ok ? "ok" : "error");
+  }
 
   if (!device) {
     return (
@@ -49,11 +40,15 @@ export function DeviceDetail() {
   }
 
   function handleAdd(rule: ScheduleRule) {
-    setRules((prev) => (prev ? [...prev, rule] : [rule]));
+    const updated = rules ? [...rules, rule] : [rule];
+    setRules(updated);
+    save(updated);
   }
 
   function handleDelete(index: number) {
-    setRules((prev) => (prev ? prev.filter((_, i) => i !== index) : []));
+    const updated = (rules ?? []).filter((_, i) => i !== index);
+    setRules(updated);
+    save(updated);
   }
 
   return (
