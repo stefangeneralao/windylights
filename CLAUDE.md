@@ -32,10 +32,10 @@ Browser (home WiFi)
 
 Defined in `src/devices.ts`. All are Shelly Gen1 firmware.
 
-| id     | name | type    | IP            |
-| ------ | ---- | ------- | ------------- |
-| lampa1 | TBD  | plug    | 192.168.0.201 |
-| lampa2 | TBD  | shelly1 | 192.168.0.202 |
+| id     | name | IP            |
+| ------ | ---- | ------------- |
+| lampa1 | TBD  | 192.168.0.201 |
+| lampa2 | TBD  | 192.168.0.202 |
 
 Update names and IPs in `src/devices.ts` as devices are added.
 
@@ -66,7 +66,7 @@ Response includes `ison` (bool), `has_timer` (bool).
 ### Device Status
 
 ```
-GET /status                           — full status: relay, wifi, uptime, power (plug)
+GET /status                           — full status: relay, wifi, uptime
 ```
 
 ### Scheduling (stored on-device, runs without the app)
@@ -82,12 +82,6 @@ Schedule rule format: `HHMM-WEEKDAYS-action`
 - `WEEKDAYS` — string of digits 0–6, where 0 = Sunday, e.g. `1234567` for every day, `12345` for weekdays
 - `action` — `on` or `off`
 - Multiple rules comma-separated, e.g. `2300-1234567-off,0700-12345-on`
-
-### Power Monitoring (Shelly Plug only)
-
-```
-GET /meter/0                          — power (W), total energy (Wh), per-minute counters
-```
 
 ## Issue Backlog
 
