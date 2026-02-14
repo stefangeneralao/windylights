@@ -16,7 +16,7 @@ export function DeviceDetail() {
 
   useEffect(() => {
     if (!id) return;
-    fetchSchedule(id).then(setRules);
+    fetchSchedule(id).then((r) => setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r));
   }, [id]);
 
   async function save(updated: ScheduleRule[]) {
@@ -41,7 +41,7 @@ export function DeviceDetail() {
   }
 
   function handleAdd(rule: ScheduleRule) {
-    const updated = rules ? [...rules, rule] : [rule];
+    const updated = (rules ? [...rules, rule] : [rule]).sort((a, b) => a.time.localeCompare(b.time));
     setRules(updated);
     save(updated);
   }
