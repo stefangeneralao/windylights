@@ -44,7 +44,7 @@ function LampButton({ device }: { device: (typeof devices)[number] }) {
         "min-h-[44px] w-full rounded-2xl px-6 py-4 text-lg font-semibold transition-colors",
         on
           ? "bg-yellow-300 text-yellow-900"
-          : "bg-zinc-700 text-zinc-300",
+          : "bg-zinc-200 text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300",
         loading ? "opacity-50" : "",
         unknown ? "opacity-40" : "",
       ].join(" ")}
@@ -56,7 +56,7 @@ function LampButton({ device }: { device: (typeof devices)[number] }) {
 
 function App() {
   return (
-    <main className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center gap-4 p-6">
+    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col items-center justify-center gap-4 p-6">
       {devices.map((d) => (
         <LampButton key={d.id} device={d} />
       ))}
