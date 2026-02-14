@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { type ScheduleRule } from "../lib/api";
-import { DAY_LABELS, DAY_DIGITS } from "../lib/days";
+import { DAY_LABELS, DAY_DIGITS, PRESETS, matchPreset } from "../lib/days";
 
 export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) {
   const [time, setTime] = useState("22:00");
   const [selectedDays, setSelectedDays] = useState<string[]>(["1", "2", "3", "4", "5", "6", "0"]);
   const [action, setAction] = useState<"on" | "off">("off");
+
+  const activePreset = matchPreset(selectedDays);
 
   function toggleDay(d: string) {
     setSelectedDays((prev) =>
@@ -47,6 +49,27 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
           ))}
         </div>
       </div>
+
+      {/* Preset chips */}
+      <div className="flex flex-col gap-2">
+        {PRESETS.map((p) => (
+          <button
+            key={p.label}
+            onClick={() => setSelectedDays([...p.days])}
+            className={[
+              "flex-1 rounded-xl text-sm font-semibold min-h-[44px] transition-colors",
+              activePreset === p.label
+                ? "bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                : "bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-300 dark:border-zinc-600",
+            ].join(" ")}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      <hr className="border-zinc-300 dark:border-zinc-600" />
+
       <div className="grid grid-cols-7 gap-1.5">
         {DAY_DIGITS.map((d) => (
           <button
@@ -63,6 +86,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
           </button>
         ))}
       </div>
+
       <button
         onClick={handleAdd}
         disabled={selectedDays.length === 0}
