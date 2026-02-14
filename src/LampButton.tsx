@@ -13,6 +13,10 @@ export function LampButton({ device }: Props) {
 
   useEffect(() => {
     fetchRelayState(device.id).then(setIsOn);
+    const interval = setInterval(() => {
+      fetchRelayState(device.id).then(setIsOn);
+    }, 5000);
+    return () => clearInterval(interval);
   }, [device.id]);
 
   async function handleToggle() {
