@@ -32,7 +32,7 @@ export function DeviceDetail() {
 
   if (!device) {
     return (
-      <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col items-center justify-center p-6">
+      <main className="min-h-dvh bg-zinc-100 dark:bg-zinc-900 flex flex-col items-center justify-center p-6">
         <p className="text-zinc-500">Device not found.</p>
         <button
           onClick={() => navigate("/")}
@@ -59,7 +59,7 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900">
+    <main className="min-h-dvh bg-zinc-100 dark:bg-zinc-900">
       <div className="max-w-sm mx-auto flex flex-col p-6 gap-6">
         <header className="pt-6 pb-2 flex items-center gap-3">
           <button
