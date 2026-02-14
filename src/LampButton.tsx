@@ -18,7 +18,7 @@ export function LampButton({ device }: Props) {
     fetchRelayState(device.id).then(setIsOn);
     const interval = setInterval(() => {
       fetchRelayState(device.id).then(setIsOn);
-    }, 5000);
+    }, 20000);
     return () => clearInterval(interval);
   }, [device.id]);
 
