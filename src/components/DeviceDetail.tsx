@@ -12,11 +12,15 @@ export function DeviceDetail() {
   const device = devices.find((d) => d.id === id);
 
   const [rules, setRules] = useState<ScheduleRule[] | null>(null);
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
+  const [saveStatus, setSaveStatus] = useState<
+    "idle" | "saving" | "ok" | "error"
+  >("idle");
 
   useEffect(() => {
     if (!id) return;
-    fetchSchedule(id, device?.gen ?? 1).then((r) => setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r));
+    fetchSchedule(id, device?.gen ?? 1).then((r) =>
+      setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r),
+    );
   }, [id]);
 
   async function save(updated: ScheduleRule[]) {
@@ -41,7 +45,9 @@ export function DeviceDetail() {
   }
 
   function handleAdd(rule: ScheduleRule) {
-    const updated = (rules ? [...rules, rule] : [rule]).sort((a, b) => a.time.localeCompare(b.time));
+    const updated = (rules ? [...rules, rule] : [rule]).sort((a, b) =>
+      a.time.localeCompare(b.time),
+    );
     setRules(updated);
     save(updated);
   }
@@ -53,50 +59,56 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900 flex flex-col p-6 gap-6 max-w-sm mx-auto">
-      <header className="pt-6 pb-2 flex items-center gap-3">
-        <button
-          onClick={() => navigate("/")}
-          className="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-11 min-h-11 flex items-center justify-center"
-          aria-label="Back"
-        >
-          <ArrowLeft size={22} />
-        </button>
-        <h1 className="text-4xl font-black text-zinc-800 dark:text-zinc-100">
-          {device.name}
-        </h1>
-      </header>
+    <main className="min-h-screen bg-zinc-100 dark:bg-zinc-900">
+      <div className="max-w-sm mx-auto flex flex-col p-6 gap-6">
+        <header className="pt-6 pb-2 flex items-center gap-3">
+          <button
+            onClick={() => navigate("/")}
+            className="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-11 min-h-11 flex items-center justify-center"
+            aria-label="Back"
+          >
+            <ArrowLeft size={22} />
+          </button>
+          <h1 className="text-4xl font-black text-zinc-800 dark:text-zinc-100">
+            {device.name}
+          </h1>
+        </header>
 
-      <section className="flex flex-col gap-3">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
-            Schedule
-          </h2>
-          {saveStatus === "saving" && (
-            <span className="text-xs text-zinc-400">Saving…</span>
-          )}
-          {saveStatus === "ok" && (
-            <span className="text-xs text-green-500 dark:text-green-400">Saved</span>
-          )}
-          {saveStatus === "error" && (
-            <span className="text-xs text-red-500">Failed to save</span>
-          )}
-        </div>
+        <section className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500">
+              Schedule
+            </h2>
+            {saveStatus === "saving" && (
+              <span className="text-xs text-zinc-400">Saving…</span>
+            )}
+            {saveStatus === "ok" && (
+              <span className="text-xs text-green-500 dark:text-green-400">
+                Saved
+              </span>
+            )}
+            {saveStatus === "error" && (
+              <span className="text-xs text-red-500">Failed to save</span>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-2 bg-white dark:bg-zinc-800 rounded-2xl p-3 shadow-sm border border-zinc-200 dark:border-zinc-700">
-          {rules === null ? (
-            <p className="text-zinc-400 text-sm px-1 py-1">Loading…</p>
-          ) : rules.length === 0 ? (
-            <p className="text-zinc-400 text-sm px-1 py-1">No schedule rules set.</p>
-          ) : (
-            rules.map((rule, i) => (
-              <RuleRow key={i} rule={rule} onDelete={() => handleDelete(i)} />
-            ))
-          )}
-        </div>
+          <div className="flex flex-col gap-2 bg-white dark:bg-zinc-800 rounded-2xl p-3 shadow-sm border border-zinc-200 dark:border-zinc-700">
+            {rules === null ? (
+              <p className="text-zinc-400 text-sm px-1 py-1">Loading…</p>
+            ) : rules.length === 0 ? (
+              <p className="text-zinc-400 text-sm px-1 py-1">
+                No schedule rules set.
+              </p>
+            ) : (
+              rules.map((rule, i) => (
+                <RuleRow key={i} rule={rule} onDelete={() => handleDelete(i)} />
+              ))
+            )}
+          </div>
 
-        {rules !== null && <AddRuleForm onAdd={handleAdd} />}
-      </section>
+          {rules !== null && <AddRuleForm onAdd={handleAdd} />}
+        </section>
+      </div>
     </main>
   );
 }
