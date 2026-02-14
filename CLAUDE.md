@@ -89,12 +89,14 @@ Schedule rule format: `HHMM-WEEKDAYS-action`
 GET /meter/0                          — power (W), total energy (Wh), per-minute counters
 ```
 
-## Features to Implement
+## Issue Backlog
 
-- Toggle relay on/off per device
-- Display current relay state (poll `/relay/0`)
-- Weekly schedule editor (read/write `/settings/relay/0` schedule_rules)
-- Power monitoring display for Plug devices (poll `/meter/0`)
+The issue backlog is tracked on **GitHub Issues** for this repository.
+
+When asked to pick up the next issue:
+1. Use `gh issue list` to find the next open issue
+2. Implement it
+3. Close the issue with `gh issue close <number>` after the implementation is done
 
 ## Development
 
