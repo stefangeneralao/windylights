@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-A static Vite + React + TypeScript single-page app for controlling Shelly smart home devices over their local HTTP API. Hosted on Netlify. Only functional when the browser is on the home WiFi network.
+A static Vite + React + TypeScript single-page app for controlling Shelly smart home devices over their local HTTP API. Hosted on GitHub Pages. Only functional when the browser is on the home WiFi network.
 
 ## Architecture
 
@@ -22,8 +22,8 @@ Browser (home WiFi)
 
 ### Infrastructure
 
-- **Netlify** — hosts the static Vite build, globally over HTTPS
-- **GitHub Actions** — builds and deploys to Netlify on push to main
+- **GitHub Pages** — hosts the static Vite build, globally over HTTPS
+- **GitHub Actions** — builds and deploys to GitHub Pages on push to main
 - **Raspberry Pi 4** (192.168.0.189) — runs Caddy + dnsmasq, always-on on home LAN
 - **Cloudflare** — DNS for stefangeneralao.com, DNS-only (not proxied)
 - **TP-Link AX1500** — home router, DHCP primary DNS set to 192.168.0.189
@@ -46,7 +46,7 @@ Update names and IPs in `src/devices.ts` as devices are added.
 | `VITE_PROXY_URL` | Base URL for the Caddy proxy, e.g. `https://proxy.stefangeneralao.com` |
 
 - Local development: set in `.env.local` (not committed)
-- Production: set as environment variable in Netlify and as a secret in GitHub Actions
+- Production: set as a secret in GitHub Actions (injected at build time)
 
 ## Shelly Gen1 API Reference
 
@@ -105,13 +105,13 @@ npm run dev
 
 ## Deployment
 
-Push to `main` → GitHub Actions builds → deploys to Netlify automatically.
+Push to `main` → GitHub Actions builds → deploys to GitHub Pages automatically.
 
 The GitHub Actions workflow should:
 
 1. Run `npm install`
 2. Run `npm run build`
-3. Deploy `dist/` to Netlify using the Netlify CLI or official Action
+3. Deploy `dist/` to GitHub Pages using the official `actions/deploy-pages` Action
 4. Inject `VITE_PROXY_URL` from GitHub Actions secrets at build time
 
 ## Design Principles
