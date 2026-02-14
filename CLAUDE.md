@@ -114,6 +114,10 @@ The GitHub Actions workflow should:
 3. Deploy `dist/` to GitHub Pages using the official `actions/deploy-pages` Action
 4. Inject `VITE_PROXY_URL` from GitHub Actions secrets at build time
 
+## Git Commits
+
+- Commit messages must be a single short sentence — no body, no bullet points, no "Co-authored-by" trailer.
+
 ## Design Principles
 
 - **Mobile first** — design for small screens first, scale up for larger ones
