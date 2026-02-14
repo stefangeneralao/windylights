@@ -37,7 +37,60 @@ function formatRules(rules: ScheduleRule[]): string {
     .join(",");
 }
 
-export async function fetchSchedule(deviceId: string): Promise<ScheduleRule[] | null> {
+function gen3DowToDigits(dow: string): string {
+  if (dow === "*") return "0123456";
+  // Device returns numeric days (0=Sun, 1=Mon, ..., 6=Sat) — same as app's internal format
+  return dow.split(",").map((d) => d.trim()).sort().join("");
+}
+
+function digitsToGen3Dow(digits: string): string {
+  return digits.split("").join(",");
+}
+
+async function fetchScheduleGen3(deviceId: string): Promise<ScheduleRule[] | null> {
+  try {
+    const res = await fetch(`${PROXY_URL}/${deviceId}/rpc/Schedule.List`);
+    const data = await res.json();
+    const jobs: unknown[] = data.jobs ?? [];
+    return jobs.flatMap((job) => {
+      const j = job as { timespec: string; calls?: { method: string; params?: { on?: boolean } }[] };
+      const parts = j.timespec.replace(/"/g, "").split(" ");
+      if (parts.length < 6) return [];
+      const hh = parts[2].padStart(2, "0");
+      const mm = parts[1].padStart(2, "0");
+      const time = `${hh}:${mm}`;
+      const days = gen3DowToDigits(parts[5]);
+      const call = j.calls?.[0];
+      if (!call) return [];
+      const action: "on" | "off" = call.params?.on ? "on" : "off";
+      return [{ time, days, action }];
+    });
+  } catch {
+    return null;
+  }
+}
+
+async function saveScheduleGen3(deviceId: string, rules: ScheduleRule[]): Promise<boolean> {
+  try {
+    await fetch(`${PROXY_URL}/${deviceId}/rpc/Schedule.DeleteAll`);
+    for (const rule of rules) {
+      const [hh, mm] = rule.time.split(":");
+      const timespec = `"0 ${parseInt(mm)} ${parseInt(hh)} * * ${digitsToGen3Dow(rule.days)}"`;
+      const calls = JSON.stringify([
+        { method: "Switch.Set", params: { id: 0, on: rule.action === "on" } },
+      ]);
+      const url = `${PROXY_URL}/${deviceId}/rpc/Schedule.Create?timespec=${encodeURIComponent(timespec)}&calls=${encodeURIComponent(calls)}&enable=true`;
+      const res = await fetch(url);
+      if (!res.ok) return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export async function fetchSchedule(deviceId: string, gen: 1 | 3 = 1): Promise<ScheduleRule[] | null> {
+  if (gen === 3) return fetchScheduleGen3(deviceId);
   try {
     const res = await fetch(`${PROXY_URL}/${deviceId}/settings/relay/0`);
     const data = await res.json();
@@ -48,7 +101,8 @@ export async function fetchSchedule(deviceId: string): Promise<ScheduleRule[] | 
   }
 }
 
-export async function saveSchedule(deviceId: string, rules: ScheduleRule[]): Promise<boolean> {
+export async function saveSchedule(deviceId: string, rules: ScheduleRule[], gen: 1 | 3 = 1): Promise<boolean> {
+  if (gen === 3) return saveScheduleGen3(deviceId, rules);
   try {
     const encoded = encodeURIComponent(formatRules(rules));
     const url = `${PROXY_URL}/${deviceId}/settings/relay/0?schedule=true&schedule_rules=${encoded}`;

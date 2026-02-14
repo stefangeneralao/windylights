@@ -16,13 +16,13 @@ export function DeviceDetail() {
 
   useEffect(() => {
     if (!id) return;
-    fetchSchedule(id).then((r) => setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r));
+    fetchSchedule(id, device?.gen ?? 1).then((r) => setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r));
   }, [id]);
 
   async function save(updated: ScheduleRule[]) {
     if (!id) return;
     setSaveStatus("saving");
-    const ok = await saveSchedule(id, updated);
+    const ok = await saveSchedule(id, updated, device?.gen ?? 1);
     setSaveStatus(ok ? "ok" : "error");
   }
 
