@@ -1,5 +1,5 @@
-import { type ScheduleRule } from "./api";
-import { formatDays } from "./days";
+import { type ScheduleRule } from "../lib/api";
+import { formatDays } from "../lib/days";
 
 export function RuleRow({
   rule,

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { type ScheduleRule } from "./api";
-import { DAY_LABELS, DAY_DIGITS } from "./days";
+import { type ScheduleRule } from "../lib/api";
+import { DAY_LABELS, DAY_DIGITS } from "../lib/days";
 
 export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) {
   const [time, setTime] = useState("22:00");

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { devices } from "./devices";
-import { fetchSchedule, saveSchedule, type ScheduleRule } from "./api";
+import { devices } from "../lib/devices";
+import { fetchSchedule, saveSchedule, type ScheduleRule } from "../lib/api";
 import { RuleRow } from "./RuleRow";
 import { AddRuleForm } from "./AddRuleForm";
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lightbulb, Settings2 } from "lucide-react";
-import { type Device } from "./devices";
-import { fetchRelayState, toggleRelay } from "./api";
+import { type Device } from "../lib/devices";
+import { fetchRelayState, toggleRelay } from "../lib/api";
 import { ToggleSwitch } from "./ToggleSwitch";
 
 interface Props {

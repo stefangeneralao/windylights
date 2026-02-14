@@ -1,8 +1,8 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { devices } from "./devices";
-import { LampButton } from "./LampButton";
-import { DeviceDetail } from "./DeviceDetail";
-import { Header } from "./Header";
+import { devices } from "./lib/devices";
+import { LampButton } from "./components/LampButton";
+import { DeviceDetail } from "./components/DeviceDetail";
+import { Header } from "./components/Header";
 
 function Home() {
   return (
