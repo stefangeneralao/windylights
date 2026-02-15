@@ -64,7 +64,7 @@ export function AddRuleForm({
             className={[
               "flex-1 rounded-xl text-sm font-semibold min-h-[44px] transition-colors",
               activePreset === p.label
-                ? "bg-zinc-600 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                ? "bg-yellow-300 text-yellow-900"
                 : "bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-300 dark:border-zinc-600",
             ].join(" ")}
           >
