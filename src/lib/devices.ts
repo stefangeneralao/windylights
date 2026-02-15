@@ -11,4 +11,5 @@ export const devices: Device[] = [
   { id: "shelly-3", name: "Lampa kontor" },
   { id: "shelly-4", name: "Lampa hylla" },
   { id: "shelly-5", name: "Lampa soffa" },
+  { id: "shelly-6", name: "Slinga sovrum", gen: 3 },
 ];
