@@ -3,16 +3,28 @@ import { type ScheduleRule } from "../lib/api";
 import { DAY_LABELS, DAY_DIGITS, PRESETS, matchPreset } from "../lib/days";
 import { ToggleSwitch } from "./ToggleSwitch";
 
-export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) {
+export function AddRuleForm({
+  onAdd,
+}: {
+  onAdd: (rule: ScheduleRule) => void;
+}) {
   const [time, setTime] = useState("22:00");
-  const [selectedDays, setSelectedDays] = useState<string[]>(["1", "2", "3", "4", "5", "6", "0"]);
+  const [selectedDays, setSelectedDays] = useState<string[]>([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "0",
+  ]);
   const [action, setAction] = useState<"on" | "off">("off");
 
   const activePreset = matchPreset(selectedDays);
 
   function toggleDay(d: string) {
     setSelectedDays((prev) =>
-      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]
+      prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d],
     );
   }
 
@@ -71,7 +83,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
             className={[
               "w-full min-h-[44px] rounded-xl text-sm font-semibold transition-colors",
               selectedDays.includes(d)
-                ? "bg-zinc-600 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                ? "bg-yellow-300 text-yellow-900"
                 : "bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600",
             ].join(" ")}
           >
