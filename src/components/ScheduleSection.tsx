@@ -9,11 +9,13 @@ export function ScheduleSection({
   rules,
   saveStatus,
   onDelete,
+  onEdit,
   onAdd,
 }: {
   rules: ScheduleRule[] | null;
   saveStatus: SaveStatus;
   onDelete: (index: number) => void;
+  onEdit: (index: number, rule: ScheduleRule) => void;
   onAdd: (rule: ScheduleRule) => void;
 }) {
   return (
@@ -44,7 +46,12 @@ export function ScheduleSection({
             </p>
           ) : (
             rules.map((rule, i) => (
-              <RuleRow key={i} rule={rule} onDelete={() => onDelete(i)} />
+              <RuleRow
+                key={i}
+                rule={rule}
+                onDelete={() => onDelete(i)}
+                onEdit={(updated) => onEdit(i, updated)}
+              />
             ))
           )}
         </div>

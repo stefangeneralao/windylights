@@ -5,20 +5,18 @@ import { ToggleSwitch } from "./ToggleSwitch";
 
 export function AddRuleForm({
   onAdd,
+  initialRule,
+  submitLabel = "Add rule",
 }: {
   onAdd: (rule: ScheduleRule) => void;
+  initialRule?: ScheduleRule;
+  submitLabel?: string;
 }) {
-  const [time, setTime] = useState("22:00");
-  const [selectedDays, setSelectedDays] = useState<string[]>([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "0",
-  ]);
-  const [action, setAction] = useState<"on" | "off">("off");
+  const [time, setTime] = useState(initialRule?.time ?? "22:00");
+  const [selectedDays, setSelectedDays] = useState<string[]>(
+    initialRule ? initialRule.days.split("") : ["1", "2", "3", "4", "5", "6", "0"],
+  );
+  const [action, setAction] = useState<"on" | "off">(initialRule?.action ?? "off");
 
   const activePreset = matchPreset(selectedDays);
 
@@ -97,7 +95,7 @@ export function AddRuleForm({
         disabled={selectedDays.length === 0}
         className="w-full rounded-xl bg-zinc-600 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold py-3 min-h-[44px] disabled:opacity-40 transition-colors"
       >
-        Add rule
+        {submitLabel}
       </button>
     </div>
   );

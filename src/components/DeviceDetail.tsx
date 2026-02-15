@@ -42,6 +42,14 @@ export function DeviceDetail() {
     save(updated);
   }
 
+  function handleEdit(index: number, rule: ScheduleRule) {
+    const updated = (rules ?? []).map((r, i) => (i === index ? rule : r)).sort(
+      (a, b) => a.time.localeCompare(b.time),
+    );
+    setRules(updated);
+    save(updated);
+  }
+
   function handleDelete(index: number) {
     const updated = (rules ?? []).filter((_, i) => i !== index);
     setRules(updated);
@@ -57,6 +65,7 @@ export function DeviceDetail() {
             rules={rules}
             saveStatus={saveStatus}
             onDelete={handleDelete}
+            onEdit={handleEdit}
             onAdd={handleAdd}
           />
         </div>
