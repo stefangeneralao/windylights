@@ -1,5 +1,6 @@
 import type { DeviceRule } from "../hooks/useScheduleRules";
 import { TimeGroup } from "./TimeGroup";
+import { Card } from "./Card";
 
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -22,13 +23,8 @@ export function DayCard({ digit, rules, isToday }: Props) {
   const timeGroups = groupByTime(rules);
 
   return (
-    <div className="snap-center shrink-0 w-[85vw] max-w-sm h-full flex flex-col rounded-2xl bg-white dark:bg-zinc-800 overflow-hidden">
-      <div
-        className={[
-          "px-5 pt-5 pb-3 flex items-baseline gap-2",
-          isToday ? "border-b border-zinc-100 dark:border-zinc-700" : "",
-        ].join(" ")}
-      >
+    <Card className="snap-center shrink-0 w-[85vw] max-w-sm h-full flex flex-col">
+      <div className="px-5 pt-5 pb-3 flex items-baseline gap-2 border-b border-zinc-100 dark:border-zinc-700">
         <h2 className="text-lg font-black text-zinc-800 dark:text-zinc-100">
           {DAY_NAMES[dayIndex]}
         </h2>
@@ -47,6 +43,6 @@ export function DayCard({ digit, rules, isToday }: Props) {
           ))
         )}
       </div>
-    </div>
+    </Card>
   );
 }

@@ -49,15 +49,17 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="min-h-dvh bg-zinc-100 dark:bg-zinc-900 pb-28">
-      <div className="max-w-sm mx-auto flex flex-col p-6 gap-6">
-        <DeviceDetailHeader name={device.name} onBack={() => navigate(-1)} />
-        <ScheduleSection
-          rules={rules}
-          saveStatus={saveStatus}
-          onDelete={handleDelete}
-          onAdd={handleAdd}
-        />
+    <main className="h-dvh bg-zinc-100 dark:bg-zinc-900 flex flex-col overflow-hidden">
+      <DeviceDetailHeader name={device.name} onBack={() => navigate(-1)} />
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="max-w-sm mx-auto px-4 pb-28 flex flex-col gap-6">
+          <ScheduleSection
+            rules={rules}
+            saveStatus={saveStatus}
+            onDelete={handleDelete}
+            onAdd={handleAdd}
+          />
+        </div>
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 export function DeviceDetailHeader({
   name,
@@ -8,15 +8,15 @@ export function DeviceDetailHeader({
   onBack: () => void;
 }) {
   return (
-    <header className="pt-6 pb-2 flex items-center gap-3">
+    <header className="flex items-center gap-3 px-4 pt-10 pb-4 max-w-sm w-full mx-auto">
       <button
         onClick={onBack}
-        className="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-11 min-h-11 flex items-center justify-center"
+        className="text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2"
         aria-label="Back"
       >
-        <ArrowLeft size={22} />
+        <ChevronLeft size={24} />
       </button>
-      <h1 className="text-4xl font-black text-zinc-800 dark:text-zinc-100">
+      <h1 className="text-3xl font-black text-zinc-800 dark:text-zinc-100">
         {name}
       </h1>
     </header>
