@@ -59,7 +59,7 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="min-h-vh bg-zinc-100 dark:bg-zinc-900 pb-28">
+    <main className="min-h-dvh bg-zinc-100 dark:bg-zinc-900 pb-28">
       <div className="max-w-sm mx-auto flex flex-col p-6 gap-6">
         <header className="pt-6 pb-2 flex items-center gap-3">
           <button
