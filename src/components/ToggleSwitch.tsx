@@ -1,10 +1,12 @@
 interface Props {
   on: boolean;
+  onClick?: () => void;
 }
 
-export function ToggleSwitch({ on }: Props) {
+export function ToggleSwitch({ on, onClick }: Props) {
   return (
     <span
+      onClick={onClick}
       className={[
         "relative inline-flex h-7 w-13 shrink-0 rounded-full transition-all duration-300",
         on ? "bg-amber-400" : "bg-zinc-300 dark:bg-zinc-600",

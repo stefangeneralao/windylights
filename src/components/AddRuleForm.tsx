@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { type ScheduleRule } from "../lib/api";
 import { DAY_LABELS, DAY_DIGITS, PRESETS, matchPreset } from "../lib/days";
+import { ToggleSwitch } from "./ToggleSwitch";
 
 export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) {
   const [time, setTime] = useState("22:00");
@@ -30,24 +31,16 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
           onChange={(e) => setTime(e.target.value)}
           className="rounded-lg px-3 py-2 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 text-base font-mono border border-zinc-300 dark:border-zinc-600 min-h-[44px]"
         />
-        <div className="flex rounded-lg overflow-hidden border border-zinc-300 dark:border-zinc-600">
-          {(["on", "off"] as const).map((a) => (
-            <button
-              key={a}
-              onClick={() => setAction(a)}
-              className={[
-                "px-4 py-2 text-sm font-semibold min-h-[44px] transition-colors",
-                action === a
-                  ? a === "on"
-                    ? "bg-yellow-300 text-yellow-900"
-                    : "bg-zinc-500 text-white"
-                  : "bg-white dark:bg-zinc-800 text-zinc-500",
-              ].join(" ")}
-            >
-              {a.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        <button
+          onClick={() => setAction(action === "on" ? "off" : "on")}
+          className="flex items-center gap-2 min-h-[44px]"
+          aria-label={`Toggle action, currently ${action}`}
+        >
+          <ToggleSwitch on={action === "on"} />
+          <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 w-7">
+            {action.toUpperCase()}
+          </span>
+        </button>
       </div>
 
       {/* Preset chips */}
