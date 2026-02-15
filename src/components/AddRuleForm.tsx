@@ -22,7 +22,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
   }
 
   return (
-    <div className="rounded-xl bg-zinc-200 dark:bg-zinc-700 px-4 py-4 flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       <div className="flex gap-3 items-center">
         <input
           type="time"
