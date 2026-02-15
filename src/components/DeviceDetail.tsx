@@ -35,7 +35,7 @@ export function DeviceDetail() {
       <main className="min-h-dvh bg-zinc-100 dark:bg-zinc-900 flex flex-col items-center justify-center p-6">
         <p className="text-zinc-500">Device not found.</p>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate(-1)}
           className="mt-4 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors underline"
         >
           Back
@@ -63,7 +63,7 @@ export function DeviceDetail() {
       <div className="max-w-sm mx-auto flex flex-col p-6 gap-6">
         <header className="pt-6 pb-2 flex items-center gap-3">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(-1)}
             className="text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-11 min-h-11 flex items-center justify-center"
             aria-label="Back"
           >

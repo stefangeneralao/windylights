@@ -3,6 +3,7 @@ import { devices } from "./lib/devices";
 import { LampButton } from "./components/LampButton";
 import { DeviceDetail } from "./components/DeviceDetail";
 import { Header } from "./components/Header";
+import { ScheduleOverview } from "./components/ScheduleOverview";
 
 function Home() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/device/:id" element={<DeviceDetail />} />
+        <Route path="/schedule" element={<ScheduleOverview />} />
       </Routes>
     </HashRouter>
   );
