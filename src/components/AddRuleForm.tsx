@@ -52,7 +52,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
             className={[
               "flex-1 rounded-xl text-sm font-semibold min-h-[44px] transition-colors",
               activePreset === p.label
-                ? "bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                ? "bg-zinc-600 text-white dark:bg-zinc-100 dark:text-zinc-900"
                 : "bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-300 dark:border-zinc-600",
             ].join(" ")}
           >
@@ -71,7 +71,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
             className={[
               "w-full min-h-[44px] rounded-xl text-sm font-semibold transition-colors",
               selectedDays.includes(d)
-                ? "bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                ? "bg-zinc-600 text-white dark:bg-zinc-100 dark:text-zinc-900"
                 : "bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600",
             ].join(" ")}
           >
@@ -83,7 +83,7 @@ export function AddRuleForm({ onAdd }: { onAdd: (rule: ScheduleRule) => void }) 
       <button
         onClick={handleAdd}
         disabled={selectedDays.length === 0}
-        className="w-full rounded-xl bg-zinc-800 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold py-3 min-h-[44px] disabled:opacity-40 transition-colors"
+        className="w-full rounded-xl bg-zinc-600 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold py-3 min-h-[44px] disabled:opacity-40 transition-colors"
       >
         Add rule
       </button>
