@@ -16,7 +16,7 @@ export async function toggleRelay(deviceId: string): Promise<void> {
 
 export interface ScheduleRule {
   time: string;   // "HH:MM"
-  days: string;   // e.g. "1234567"
+  days: string;   // app-internal: 0=Sun, 1–6=Mon–Sat, e.g. "0123456"
   action: "on" | "off";
 }
 
@@ -24,27 +24,38 @@ function parseRules(raw: string[]): ScheduleRule[] {
   return raw.flatMap((r) => {
     const parts = r.split("-");
     if (parts.length < 3) return [];
-    const [hhmm, days, action] = parts;
+    const [hhmm, rawDays, action] = parts;
     if (action !== "on" && action !== "off") return [];
     const time = `${hhmm.slice(0, 2)}:${hhmm.slice(2, 4)}`;
+    // Gen1 uses 0–6 (Mon–Sun); convert to app-internal 0=Sun, 1–6=Mon–Sat
+    const days = rawDays.split("").map((d) => String((parseInt(d) + 1) % 7)).join("");
     return [{ time, days, action }];
   });
 }
 
 function formatRules(rules: ScheduleRule[]): string {
   return rules
-    .map((r) => `${r.time.replace(":", "")}-${r.days}-${r.action}`)
+    .map((r) => {
+      // App uses 0=Sun, 1–6=Mon–Sat; Gen1 expects 0=Mon, 6=Sun
+      const days = r.days.split("").map((d) => String((parseInt(d) + 6) % 7)).join("");
+      return `${r.time.replace(":", "")}-${days}-${r.action}`;
+    })
     .join(",");
 }
 
 function gen3DowToDigits(dow: string): string {
   if (dow === "*") return "0123456";
-  // Device returns numeric days (0=Sun, 1=Mon, ..., 6=Sat) — same as app's internal format
-  return dow.split(",").map((d) => d.trim()).sort().join("");
+  // Gen3 devices use ISO 8601: 1=Mon through 7=Sun
+  // Convert to app format: 0=Sun, 1=Mon through 6=Sat
+  return dow.split(",").map((d) => {
+    const day = d.trim();
+    return day === "7" ? "0" : day; // Convert ISO Sunday (7) to cron Sunday (0)
+  }).sort().join("");
 }
 
 function digitsToGen3Dow(digits: string): string {
-  return digits.split("").join(",");
+  // Convert app format (0=Sun, 1-6=Mon-Sat) to ISO 8601 (1-7=Mon-Sun)
+  return digits.split("").map((d) => d === "0" ? "7" : d).join(",");
 }
 
 async function fetchScheduleGen3(deviceId: string): Promise<ScheduleRule[] | null> {

@@ -79,9 +79,9 @@ GET /settings/relay/0?schedule=true&schedule_rules=HHMM-WEEKDAYS-on/off
 Schedule rule format: `HHMM-WEEKDAYS-action`
 
 - `HHMM` — 24h time, e.g. `2300`
-- `WEEKDAYS` — string of digits 0–6, where 0 = Sunday, e.g. `1234567` for every day, `12345` for weekdays
+- `WEEKDAYS` — string of digits 0–6, where 0 = Monday and 6 = Sunday, e.g. `0123456` for every day, `01234` for weekdays
 - `action` — `on` or `off`
-- Multiple rules comma-separated, e.g. `2300-1234567-off,0700-12345-on`
+- Multiple rules comma-separated, e.g. `2300-0123456-off,0700-01234-on`
 
 ## Issue Backlog
 
