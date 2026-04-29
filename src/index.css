@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+body {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+input[type='time']::-webkit-calendar-picker-indicator {
+  display: none;
+}

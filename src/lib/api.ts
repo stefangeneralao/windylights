@@ -14,6 +14,14 @@ export async function toggleRelay(deviceId: string): Promise<void> {
   await fetch(`${PROXY_URL}/${deviceId}/relay/0?turn=toggle`).catch(() => {});
 }
 
+export async function setRelay(deviceId: string, on: boolean, gen: 1 | 3 = 1): Promise<void> {
+  if (gen === 3) {
+    await fetch(`${PROXY_URL}/${deviceId}/rpc/Switch.Set?id=0&on=${on}`).catch(() => {});
+  } else {
+    await fetch(`${PROXY_URL}/${deviceId}/relay/0?turn=${on ? "on" : "off"}`).catch(() => {});
+  }
+}
+
 export interface ScheduleRule {
   time: string;   // "HH:MM"
   days: string;   // app-internal: 0=Sun, 1–6=Mon–Sat, e.g. "0123456"

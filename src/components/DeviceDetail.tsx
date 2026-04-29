@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { devices } from "../lib/devices";
-import { fetchSchedule, saveSchedule, type ScheduleRule } from "../lib/api";
+import { fetchSchedule, saveSchedule, fetchRelayState, type ScheduleRule } from "../lib/api";
 import { DeviceNotFound } from "./DeviceNotFound";
 import { DeviceDetailHeader } from "./DeviceDetailHeader";
 import { ScheduleSection } from "./ScheduleSection";
@@ -12,15 +12,15 @@ export function DeviceDetail() {
   const device = devices.find((d) => d.id === id);
 
   const [rules, setRules] = useState<ScheduleRule[] | null>(null);
-  const [saveStatus, setSaveStatus] = useState<
-    "idle" | "saving" | "ok" | "error"
-  >("idle");
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "error">("idle");
+  const [isOn, setIsOn] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (!id) return;
     fetchSchedule(id, device?.gen ?? 1).then((r) =>
       setRules(r ? [...r].sort((a, b) => a.time.localeCompare(b.time)) : r),
     );
+    fetchRelayState(id).then(setIsOn);
   }, [id]);
 
   async function save(updated: ScheduleRule[]) {
@@ -57,8 +57,15 @@ export function DeviceDetail() {
   }
 
   return (
-    <main className="h-dvh bg-zinc-100 dark:bg-zinc-900 flex flex-col overflow-hidden">
-      <DeviceDetailHeader name={device.name} onBack={() => navigate(-1)} />
+    <main className="h-dvh bg-zinc-100 flex flex-col overflow-hidden">
+      <div
+        aria-hidden
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(80% 40% at 50% 0%, rgba(253,224,71,0.18), transparent 70%)",
+        }}
+      />
+      <DeviceDetailHeader name={device.name} isOn={isOn} onBack={() => navigate(-1)} />
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="max-w-sm mx-auto px-4 pb-28 flex flex-col gap-6">
           <ScheduleSection

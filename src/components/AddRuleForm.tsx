@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Plus } from "lucide-react";
 import { type ScheduleRule } from "../lib/api";
 import { DAY_LABELS, DAY_DIGITS, PRESETS, matchPreset } from "../lib/days";
 import { ToggleSwitch } from "./ToggleSwitch";
@@ -34,36 +35,43 @@ export function AddRuleForm({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-3 items-center">
-        <input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          className="rounded-lg px-3 py-2 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 text-base font-mono border border-zinc-300 dark:border-zinc-600 min-h-[44px]"
-        />
+      {/* Time + action row */}
+      <div className="flex gap-3 items-stretch">
+        <div className="flex-1 flex items-center justify-center rounded-xl bg-zinc-100 border border-zinc-200 px-4 min-h-[56px]">
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="bg-transparent text-2xl font-mono font-bold text-zinc-800 tabular-nums outline-none w-full text-center"
+          />
+        </div>
         <button
           onClick={() => setAction(action === "on" ? "off" : "on")}
-          className="flex items-center gap-2 min-h-[44px]"
+          className={[
+            "flex flex-col items-center justify-center gap-1 px-4 min-w-[88px] rounded-xl border transition-colors",
+            action === "on"
+              ? "bg-amber-300/30 border-amber-300 text-amber-900"
+              : "bg-zinc-100 border-zinc-200 text-zinc-700",
+          ].join(" ")}
+          style={action === "on" ? { boxShadow: "0 0 20px rgba(253,224,71,0.4)" } : {}}
           aria-label={`Toggle action, currently ${action}`}
         >
           <ToggleSwitch on={action === "on"} />
-          <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 w-7">
-            {action.toUpperCase()}
-          </span>
+          <span className="text-[11px] font-extrabold tracking-wider">{action.toUpperCase()}</span>
         </button>
       </div>
 
-      {/* Preset chips */}
-      <div className="flex flex-col gap-2">
+      {/* Presets */}
+      <div className="flex gap-2">
         {PRESETS.map((p) => (
           <button
             key={p.label}
             onClick={() => setSelectedDays([...p.days])}
             className={[
-              "flex-1 rounded-xl text-sm font-semibold min-h-[44px] transition-colors",
+              "flex-1 rounded-lg text-xs font-bold py-2.5 transition-colors",
               activePreset === p.label
-                ? "bg-yellow-300 text-yellow-900"
-                : "bg-white dark:bg-zinc-800 text-zinc-500 border border-zinc-300 dark:border-zinc-600",
+                ? "bg-amber-300 text-amber-900"
+                : "bg-zinc-100 text-zinc-500 border border-zinc-200",
             ].join(" ")}
           >
             {p.label}
@@ -71,18 +79,17 @@ export function AddRuleForm({
         ))}
       </div>
 
-      <hr className="border-zinc-300 dark:border-zinc-600" />
-
+      {/* Day grid */}
       <div className="grid grid-cols-7 gap-1.5">
         {DAY_DIGITS.map((d) => (
           <button
             key={d}
             onClick={() => toggleDay(d)}
             className={[
-              "w-full min-h-[44px] rounded-xl text-sm font-semibold transition-colors",
+              "min-h-[44px] rounded-lg text-sm font-bold transition-colors",
               selectedDays.includes(d)
-                ? "bg-yellow-300 text-yellow-900"
-                : "bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 border border-zinc-300 dark:border-zinc-600",
+                ? "bg-amber-300 text-amber-900 shadow-[0_4px_10px_-4px_rgba(253,224,71,0.7)]"
+                : "bg-zinc-100 text-zinc-400 border border-zinc-200",
             ].join(" ")}
           >
             {DAY_LABELS[parseInt(d)]}
@@ -93,8 +100,9 @@ export function AddRuleForm({
       <button
         onClick={handleAdd}
         disabled={selectedDays.length === 0}
-        className="w-full rounded-xl bg-zinc-600 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold py-3 min-h-[44px] disabled:opacity-40 transition-colors"
+        className="w-full rounded-xl bg-zinc-900 text-white font-bold py-3.5 min-h-[48px] hover:bg-zinc-800 disabled:opacity-40 flex items-center justify-center gap-2 transition-colors"
       >
+        <Plus size={16} />
         {submitLabel}
       </button>
     </div>
